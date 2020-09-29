@@ -1,17 +1,38 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+
+const App = () => {
+  return (
+    <div>
+      <HookSwitcher/>
+    </div>
+  );
+};
+
+const HookSwitcher = () => {
+  const [color, setColor] = useState('gray');
+  const [fontSize, setFontSize] = useState(14);
+
+  return (
+    <div style={{padding: '10px', backgroundColor: color, fontSize: `${fontSize}px`}}>
+      Hello
+      <button
+        onClick={() => setColor("gray")}>
+        Dark
+      </button>
+      <button
+        onClick={() => setColor("white")}>
+        Light
+      </button>
+      <button
+        onClick={() => setFontSize((s) => s+2)}>
+        +
+      </button>
+    </div>
+  );
+};
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <App/>,
   document.getElementById('root')
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
