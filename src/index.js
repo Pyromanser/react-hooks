@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 
 const App = () => {
@@ -16,8 +16,8 @@ const App = () => {
           onClick={() => setVisible(false)}>
           hide
         </button>
-        <ClassCounter value={value}/>
-        <HookCounter value={value}/>
+        {/*<HookCounter value={value}/>*/}
+        <Notification/>
       </div>
     );
   } else {
@@ -27,36 +27,38 @@ const App = () => {
 
 const HookCounter = ({value}) => {
 
+  //componentDidMount
   useEffect(() => {
-    console.log("useEffect()");
+    console.log("mount");
 
-    return () => {
-      console.log("clear")
-    };
-  }, [value]);
+    //componentWillUnmount
+    return () => console.log("unmount");
+  }, []);
+
+  //componentDidMount + componentDidUpdate
+  useEffect(() => console.log("update"));
+
+  //componentWillUnmount
+  // useEffect(() => () => console.log("unmount"), []);
 
   return <p>{value}</p>;
 };
 
-class ClassCounter extends Component {
+const Notification = () => {
+  const [visible, setVisible] = useState(true);
 
-  componentDidMount() {
-    console.log("class: mount");
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(false), 2000)
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log("class: update");
-  };
+    return () => clearTimeout(timer);
+  }, []);
 
-  componentWillUnmount() {
-    console.log("class: unmount");
-  };
-
-  render() {
-    return <p>{this.props.value}</p>
-  };
-}
-
+  return (
+    <div>
+      {visible && <p>Hello</p>}
+    </div>
+  );
+};
 
 ReactDOM.render(
   <App/>,
